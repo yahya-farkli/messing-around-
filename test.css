@@ -88,3 +88,6 @@ line-height: normal;
 padding-right: 0;
 min-width: fit-content;
 }
+.cta-button .link {
+  pointer-events: auto;
+}

@@ -114,7 +114,7 @@
 
   <button class="cta-button wrapper">
     <div class="text-wrapper">
-      <a href="https://facebook.com" target="_blank" class="link">Continue reading</a>
+      <a href="https://facebook.com" target="_blank" class="link">Facebook</a>
     </div>
     <svg width="64" height="64" viewBox="0 0 63 64" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="64" height="64" rx="32" fill="white"/>
@@ -189,17 +189,28 @@
     
     // Handle link clicks to prevent interference with Matter.js mouse control
     document.querySelector(".link").addEventListener("click", function(event) {
-        event.stopPropagation(); // Prevent the click from affecting the Matter.js physics
+        event.stopPropagation();
+        // Remove this line if you want the link to open immediately
+        // event.preventDefault();
+        
+        // Disable physics temporarily
+        Matter.Sleeping.set(box, true);
+        
+        // Optional: Add a small delay before opening the link
+        setTimeout(() => {
+            window.open(this.href, '_blank');
+            // Re-enable physics after opening the link
+            Matter.Sleeping.set(box, false);
+        }, 100);
     });
-
     // Disable the mouse constraint on mousedown for the link and re-enable after click
-    document.querySelector(".link").addEventListener("mousedown", function(event) {
-        mouseConstraint.constraint.bodyB = null; // Temporarily remove the body from the constraint
-    });
+    //document.querySelector(".link").addEventListener("mousedown", function(event) {
+    //    mouseConstraint.constraint.bodyB = null; // Temporarily remove the body from the constraint
+    //});
 
-    document.querySelector(".link").addEventListener("mouseup", function(event) {
-        mouseConstraint.constraint.bodyB = box; // Re-enable the body in the constraint
-    });
+    //document.querySelector(".link").addEventListener("mouseup", function(event) {
+    //    mouseConstraint.constraint.bodyB = box; // Re-enable the body in the constraint
+    //});
 
   </script>
 

@@ -1,0 +1,207 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draggable Div Element in JavaScipt | CodingNepal</title>
+  <link rel="stylesheet" href="test.css">
+  
+ <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+      
+        <button class="cta-button wrapper">
+            <div class="text-wrapper" href="facebook.com">Continue reading</div>
+            <svg width="64" height="64" viewBox="0 0 63 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="64" height="64" rx="32" fill="white"/>
+                <path d="M18.6666 45.3333L45.3333 18.6667M45.3333 18.6667H18.6666M45.3333 18.6667V45.3333" stroke="#2A2A2A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.18.0/matter.min.js"></script>
+  <script>
+    // Module aliases
+    var Engine = Matter.Engine,
+        Render = Matter.Render,
+        Runner = Matter.Runner,
+        Bodies = Matter.Bodies,
+        Composite = Matter.Composite,
+        Mouse = Matter.Mouse,
+        MouseConstraint = Matter.MouseConstraint;
+    
+    // Create an engine
+    var engine = Engine.create();
+    
+    // Create a renderer
+    var render = Render.create({
+        element: document.body,
+        engine: engine,
+        options: {
+            width: window.innerWidth,
+            height: window.innerHeight,
+            wireframes: false, 
+            background: 'transparent'
+        }
+    });
+    
+    // Create the draggable div as a rectangle body
+    var wrapper = document.querySelector(".wrapper");
+    var wrapperRect = wrapper.getBoundingClientRect();
+    var box = Bodies.rectangle(wrapperRect.left + wrapperRect.width/2, wrapperRect.top + wrapperRect.height/2, wrapperRect.width, wrapperRect.height, {
+        render: {
+            fillStyle: 'transparent'
+        },
+        chamfer: { radius: 10 },
+        isStatic: false
+    });
+    
+    // Add the box to the world
+    Composite.add(engine.world, [box]);
+    
+    // Add mouse control
+    var mouse = Mouse.create(render.canvas),
+        mouseConstraint = MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+                stiffness: 0.2,
+                render: {
+                    visible: false
+                }
+            }
+        });
+    
+    Composite.add(engine.world, mouseConstraint);
+    
+    // Keep the mouse in sync with rendering
+    render.mouse = mouse;
+    
+    // Create walls
+    var ground = Bodies.rectangle(window.innerWidth/2, window.innerHeight + 50, window.innerWidth, 100, { isStatic: true });
+    var leftWall = Bodies.rectangle(-50, window.innerHeight/2, 100, window.innerHeight, { isStatic: true });
+    var rightWall = Bodies.rectangle(window.innerWidth + 50, window.innerHeight/2, 100, window.innerHeight, { isStatic: true });
+    var ceiling = Bodies.rectangle(window.innerWidth/2, -50, window.innerWidth, 100, { isStatic: true });
+    
+    Composite.add(engine.world, [ground, leftWall, rightWall, ceiling]);
+    
+    // Run the engine
+    Engine.run(engine);
+    
+    // Run the renderer
+    Render.run(render);
+    
+    // Update the position of the wrapper div to match the physics body
+    (function reposition() {
+        wrapper.style.left = `${box.position.x - wrapperRect.width/2}px`;
+        wrapper.style.top = `${box.position.y - wrapperRect.height/2}px`;
+        wrapper.style.transform = `rotate(${box.angle}rad)`;
+        requestAnimationFrame(reposition);
+    })();
+    </script>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draggable Div Element with Matter.js</title>
+  <link rel="stylesheet" href="test.css">
+  <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+  <button class="cta-button wrapper">
+    <div class="text-wrapper">
+      <a href="https://facebook.com" target="_blank" class="link">Continue reading</a>
+    </div>
+    <svg width="64" height="64" viewBox="0 0 63 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="32" fill="white"/>
+      <path d="M18.6666 45.3333L45.3333 18.6667M45.3333 18.6667H18.6666M45.3333 18.6667V45.3333" stroke="#2A2A2A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.18.0/matter.min.js"></script>
+  <script>
+    var Engine = Matter.Engine,
+        Render = Matter.Render,
+        Runner = Matter.Runner,
+        Bodies = Matter.Bodies,
+        Composite = Matter.Composite,
+        Mouse = Matter.Mouse,
+        MouseConstraint = Matter.MouseConstraint;
+    
+    var engine = Engine.create();
+    var render = Render.create({
+        element: document.body,
+        engine: engine,
+        options: {
+            width: window.innerWidth,
+            height: window.innerHeight,
+            wireframes: false, 
+            background: 'transparent'
+        }
+    });
+    
+    var wrapper = document.querySelector(".wrapper");
+    var wrapperRect = wrapper.getBoundingClientRect();
+    var box = Bodies.rectangle(wrapperRect.left + wrapperRect.width/2, wrapperRect.top + wrapperRect.height/2, wrapperRect.width, wrapperRect.height, {
+        render: {
+            fillStyle: 'transparent'
+        },
+        chamfer: { radius: 10 },
+        isStatic: false
+    });
+    
+    Composite.add(engine.world, [box]);
+    
+    var mouse = Mouse.create(render.canvas),
+        mouseConstraint = MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+                stiffness: 0.2,
+                render: {
+                    visible: false
+                }
+            }
+        });
+    
+    Composite.add(engine.world, mouseConstraint);
+    render.mouse = mouse;
+    
+    var ground = Bodies.rectangle(window.innerWidth/2, window.innerHeight + 50, window.innerWidth, 100, { isStatic: true });
+    var leftWall = Bodies.rectangle(-50, window.innerHeight/2, 100, window.innerHeight, { isStatic: true });
+    var rightWall = Bodies.rectangle(window.innerWidth + 50, window.innerHeight/2, 100, window.innerHeight, { isStatic: true });
+    var ceiling = Bodies.rectangle(window.innerWidth/2, -50, window.innerWidth, 100, { isStatic: true });
+    
+    Composite.add(engine.world, [ground, leftWall, rightWall, ceiling]);
+    
+    Engine.run(engine);
+    Render.run(render);
+    
+    (function reposition() {
+        wrapper.style.left = `${box.position.x - wrapperRect.width/2}px`;
+        wrapper.style.top = `${box.position.y - wrapperRect.height/2}px`;
+        wrapper.style.transform = `rotate(${box.angle}rad)`;
+        requestAnimationFrame(reposition);
+    })();
+    
+    // Handle link clicks to prevent interference with Matter.js mouse control
+    document.querySelector(".link").addEventListener("click", function(event) {
+        event.stopPropagation(); // Prevent the click from affecting the Matter.js physics
+    });
+
+    // Disable the mouse constraint on mousedown for the link and re-enable after click
+    document.querySelector(".link").addEventListener("mousedown", function(event) {
+        mouseConstraint.constraint.bodyB = null; // Temporarily remove the body from the constraint
+    });
+
+    document.querySelector(".link").addEventListener("mouseup", function(event) {
+        mouseConstraint.constraint.bodyB = box; // Re-enable the body in the constraint
+    });
+
+  </script>
+
+</body>
+</html>
